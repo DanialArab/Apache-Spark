@@ -1,7 +1,7 @@
 # Apache-Spark
 
 # Course notes and points 
-(this notebook contains all the theories and my notes from the class and all the coding and assignments are in the other notebook in my ubuntu VM called "class_coding", so later I need to push these two files into my github as a spark portfolio)
+(this repo contains all the theories and my notes from the class and all the coding and assignments are in the other notebook in my ubuntu VM called "class_coding", so later I need to push these two files into my github as a spark portfolio)
 
 sources: 
 Spark and Python for Big Data class by Jose Portilla on udemy
