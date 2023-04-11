@@ -1,7 +1,8 @@
 # Apache-Spark
 
 # Course notes and points 
-(this repo contains all the theories and my notes from the class and all the coding and assignments are in the other notebook in my ubuntu VM called "class_coding", so later I need to push these two files into my github as a spark portfolio)
+
+This repo documents what I learned about Apache Spark and how it differs from Pandas. The theories and course notes are detailed in the following. My solution to all coding assignments are incorporated in the jupyter notebook files attached to this repo.
 
 sources: 
 Spark and Python for Big Data class by Jose Portilla on udemy
