@@ -1,7 +1,5 @@
 # Apache-Spark
 
-# Course notes and points 
-
 This repo documents what I learned about Apache Spark and how it differs from Pandas. The theories and course notes are detailed in the following. My solution to all coding assignments are incorporated in the jupyter notebook files attached to this repo.
 
 sources: 
