@@ -1,6 +1,6 @@
 # Apache-Spark
 
-This repo documents what I learned about Apache Spark and how it differs from Pandas. The theories and course notes are detailed in the following. My solution to all coding assignments are incorporated in the jupyter notebook files attached to this repo.
+This repo documents my understanding of Apache Spark and how it differs from Pandas. The theories and course notes are detailed in the following. My solution to all coding assignments are incorporated in the jupyter notebook files attached to this repo.
 
 course: 
 Spark and Python for Big Data by Jose Portilla on udemy
@@ -924,6 +924,554 @@ Here is an example using the data from the documentation:
         gbt_acc = acc_eval.evaluate(gbt_preds)
         print (f'GBT accuracy = {gbt_acc}')
         GBT accuracy = 0.9079497907949791
+
+41. Using ML for a different purpose - to get the feature importance
+
+        spark = SparkSession.builder.appName('consulting').getOrCreate()
+        data = spark.read.csv(path, header=True, inferSchema=True)
+        data.head(1)
+        [Row(A=4, B=2, C=12.0, D=3, Spoiled=1.0)]
+
+        data.printSchema()
+        root
+         |-- A: integer (nullable = true)
+         |-- B: integer (nullable = true)
+         |-- C: double (nullable = true)
+         |-- D: integer (nullable = true)
+         |-- Spoiled: double (nullable = true)
+
+        data.select('Spoiled').distinct().show()
+        +-------+
+        |Spoiled|
+        +-------+
+        |    0.0|
+        |    1.0|
+        +-------+
+
+        from pyspark.ml.feature import VectorAssembler
+        data.columns
+        ['A', 'B', 'C', 'D', 'Spoiled']
+        assembler = VectorAssembler(inputCols=['A', 'B', 'C', 'D'], outputCol='features')
+        output = assembler.transform(data)
+        output.printSchema()
+
+        root
+         |-- A: integer (nullable = true)
+         |-- B: integer (nullable = true)
+         |-- C: double (nullable = true)
+         |-- D: integer (nullable = true)
+         |-- Spoiled: double (nullable = true)
+         |-- features: vector (nullable = true)
+
+        final_data = output.select(['features', 'Spoiled', ])
+
+        final_data.show()
+        +-------------------+-------+
+        |           features|Spoiled|
+        +-------------------+-------+
+        | [4.0,2.0,12.0,3.0]|    1.0|
+        | [5.0,6.0,12.0,7.0]|    1.0|
+        | [6.0,2.0,13.0,6.0]|    1.0|
+        | [4.0,2.0,12.0,1.0]|    1.0|
+        | [4.0,2.0,12.0,3.0]|    1.0|
+        |[10.0,3.0,13.0,9.0]|    1.0|
+        | [8.0,5.0,14.0,5.0]|    1.0|
+        | [5.0,8.0,12.0,8.0]|    1.0|
+        | [6.0,5.0,12.0,9.0]|    1.0|
+        | [3.0,3.0,12.0,1.0]|    1.0|
+        | [9.0,8.0,11.0,3.0]|    1.0|
+        |[1.0,10.0,12.0,3.0]|    1.0|
+        |[1.0,5.0,13.0,10.0]|    1.0|
+        |[2.0,10.0,12.0,6.0]|    1.0|
+        |[1.0,10.0,11.0,4.0]|    1.0|
+        | [5.0,3.0,12.0,2.0]|    1.0|
+        | [4.0,9.0,11.0,8.0]|    1.0|
+        | [5.0,1.0,11.0,1.0]|    1.0|
+        |[4.0,9.0,12.0,10.0]|    1.0|
+        | [5.0,8.0,10.0,9.0]|    1.0|
+        +-------------------+-------+
+        only showing top 20 rows
+
+        from pyspark.ml.classification import RandomForestClassifier
+
+        rfc = RandomForestClassifier(featuresCol='features', labelCol='Spoiled')
+        rfc_model = rfc.fit(final_data)
+        
+        rfc_model.featureImportances
+        SparseVector(4, {0: 0.036, 1: 0.0285, 2: 0.9095, 3: 0.026})
+        
+        data.head(1)
+        [Row(A=4, B=2, C=12.0, D=3, Spoiled=1.0)]
+        
+        final_data.head(1)
+        [Row(features=DenseVector([4.0, 2.0, 12.0, 3.0]), Spoiled=1.0)]
+ 
+So chemical C is the cause of early spoiling!
+
+42. Unsupervised learning 
+
+Often we try to create groups from data instead of trying to predict classes or continuous values. This sort of problem is known as clustering. You can think of it almost as an attempt to create labels. You input some unlabeled data, and the unsupervised learning algorithm returns back possible clusters of the data.
+
+This means you have data that only contains features and you want to see if there are patterns in the data that would allow you to create groupings or clusters. This is a key distinction from our previous supervised learning tasks where we had historical labeled data.
+
+By the nature of this problem, it can be difficult to evaluate the groups or clusters for correctness. A large part of being able to interpret the clusters assigned comes down to **domain knowledge.**
+
+A lot of clustering problems have no 100% correct approach or answer, and that's just the nature of unsupervised learning in general, since you never had those labels to check against.
+
+42. K-means Clustering 
+
+The K means algorithm does the following steps.
+
++ You as the user have to choose a number of clusters K So you have to choose that **before you actually initiate the model.** That means you have to use **domain knowledge to choose a reasonable K value.**
+
++ Then it's going to randomly assign each point to a cluster until clusters stop changing, it's going to repeat the following for each cluster.
+
+    + It's going to compute the cluster centroid by taking the mean vector of points in the cluster.
+
+    + Then it will assign each data point to the cluster for which the centroid is the closest.
+    
+    
+Choosing a K value can be a pretty difficult decision or maybe a really easy decision. It really depends on the domain knowledge and what the data looks like.
+
+43. Elbow technique
+
+There is no easy answer for choosing a “best” K value. One mathematical method is the elbow method. First of all, we compute the sum of squared error (SSE) for some values of k (for example 2, 4, 6, 8, etc.). The SSE is defined as the sum of the squared distance between each member of the cluster and its centroid. 
+
+If you plot SSE vs. k, you will see that the error decreases as k gets larger; **this is because when the number of clusters increases, they should be smaller, so distortion is also smaller.**
+
+The idea of the elbow method is to choose the k at which the SSE decreases abruptly. But don’t take this as a strict rule when choosing a K value! A lot of time it depends more on the context of the exact situation (domain knowledge)
+
+side note: Pyspark by itself doesn’t support a plotting mechanism, but you could use collect() and then plot the results with matplotlib or other visualization libraries.
+
+44. Here is an example of kmeans clustering coding 
+
+
+        import findspark
+        findspark.init("/home/danial/spark-3.3.2-bin-hadoop3")
+        
+        from pyspark.sql import SparkSession
+        spark = SparkSession.builder.appName('clustering').getOrCreate()
+        
+        path = '/home/danial/Desktop/myspark/Apache-Spark/Python-and-Spark-for-Big-Data master/Spark_for_Machine_Learning/Clustering/sample_kmeans_data.txt'
+        
+        data = spark.read.format('libsvm').load(path)
+
+
+        data.printSchema()
+        root
+         |-- label: double (nullable = true)
+         |-- features: vector (nullable = true)
+
+        data.show()
+        +-----+--------------------+
+        |label|            features|
+        +-----+--------------------+
+        |  0.0|           (3,[],[])|
+        |  1.0|(3,[0,1,2],[0.1,0...|
+        |  2.0|(3,[0,1,2],[0.2,0...|
+        |  3.0|(3,[0,1,2],[9.0,9...|
+        |  4.0|(3,[0,1,2],[9.1,9...|
+        |  5.0|(3,[0,1,2],[9.2,9...|
+        +-----+--------------------+
+
+        since it is unsupervised we don't need label
+
+        final_data = data.select('features')
+        final_data.show()
+        +--------------------+
+        |            features|
+        +--------------------+
+        |           (3,[],[])|
+        |(3,[0,1,2],[0.1,0...|
+        |(3,[0,1,2],[0.2,0...|
+        |(3,[0,1,2],[9.0,9...|
+        |(3,[0,1,2],[9.1,9...|
+        |(3,[0,1,2],[9.2,9...|
+        +--------------------+
+
+
+        from pyspark.ml.clustering import KMeans
+        
+        kmeans = KMeans().setK(2).setSeed(1)
+        model = kmeans.fit(final_data)
+
+        **Within Set Sum of Squared Errors (WSSSE)**
+
+        wssse = model.summary.trainingCost
+        wssse
+        0.11999999999994547
+        
+        centers = model.clusterCenters()
+        centers
+        [array([9.1, 9.1, 9.1]), array([0.1, 0.1, 0.1])]
+        
+        results = model.transform(final_data)
+        results.show()
+        
+        +--------------------+----------+
+        |            features|prediction|
+        +--------------------+----------+
+        |           (3,[],[])|         1|
+        |(3,[0,1,2],[0.1,0...|         1|
+        |(3,[0,1,2],[0.2,0...|         1|
+        |(3,[0,1,2],[9.0,9...|         0|
+        |(3,[0,1,2],[9.1,9...|         0|
+        |(3,[0,1,2],[9.2,9...|         0|
+        +--------------------+----------+
+
+        kmeans = KMeans().setK(3).setSeed(1)
+        model = kmeans.fit(final_data)
+
+        wssse = model.summary.trainingCost
+        wssse
+        0.07499999999994544
+        
+        centers = model.clusterCenters()
+        centers
+        [array([9.1, 9.1, 9.1]), array([0.05, 0.05, 0.05]), array([0.2, 0.2, 0.2])]
+        
+        results = model.transform(final_data)
+        results.show()
+        
+        +--------------------+----------+
+        |            features|prediction|
+        +--------------------+----------+
+        |           (3,[],[])|         1|
+        |(3,[0,1,2],[0.1,0...|         1|
+        |(3,[0,1,2],[0.2,0...|         2|
+        |(3,[0,1,2],[9.0,9...|         0|
+        |(3,[0,1,2],[9.1,9...|         0|
+        |(3,[0,1,2],[9.2,9...|         0|
+        +--------------------+----------+
+
+
+45. Feature scaling and curse of dimensionality 
+
+So for a certain machine learning algorithms, sometimes it's a good idea to actually scale your data. And this is due to something called **curse of dimensionality**. Basically what happens is you have a drop in model performance with highly dimensional data. So we try to scale features using pyspark.
+
+If you're dealing with a data set that has many, many features to it or many columns of data which is highly dimensional, what you need to do is actually to scale those features.
+
+**curse of dimensionality**:
+
+The curse of dimensionality is a term used in machine learning and other fields to describe the difficulties that arise when analyzing and modeling high-dimensional data. In high-dimensional data, the number of features or dimensions is large, and the amount of data available to estimate the relationships between these features is limited.
+
+One major issue that arises in high-dimensional data is sparsity, which refers to the fact that as the number of dimensions increases, the number of data points required to capture the relationships between them grows exponentially. This can lead to overfitting, where a model becomes too complex and captures noise or irrelevant features in the data.
+
+Another issue with high-dimensional data is that the distance between points in the feature space becomes less meaningful. In other words, the "nearest neighbors" of a data point in high-dimensional space may not actually be very similar to it in terms of the underlying relationships between the features.
+
+To address the curse of dimensionality, dimensionality reduction techniques such as PCA, t-SNE, and others can be used to extract meaningful low-dimensional representations of the data. Additionally, regularization techniques and feature selection methods can be used to prevent overfitting and identify the most important features for modeling.
+
+46. Example of coding KMeans clustering with feature scaling using **StandardScaler**
+
+        import findspark
+        findspark.init("/home/danial/spark-3.3.2-bin-hadoop3/")
+        from pyspark.sql import SparkSession
+        
+        spark = SparkSession.builder.appName('cluster').getOrCreate()
+        
+        path = '/home/danial/Desktop/myspark/Apache-Spark/Python-and-Spark-for-Big-Data-master/Spark_for_Machine_Learning/Clustering/seeds_dataset.csv'
+        
+        data = spark.read.csv(path, header=True, inferSchema=True)
+        data.printSchema()
+        
+        root
+         |-- area: double (nullable = true)
+         |-- perimeter: double (nullable = true)
+         |-- compactness: double (nullable = true)
+         |-- length_of_kernel: double (nullable = true)
+         |-- width_of_kernel: double (nullable = true)
+         |-- asymmetry_coefficient: double (nullable = true)
+         |-- length_of_groove: double (nullable = true)
+
+        data.head(1)
+        
+        [Row(area=15.26, perimeter=14.84, compactness=0.871, length_of_kernel=5.763, width_of_kernel=3.312, asymmetry_coefficient=2.221, length_of_groove=5.22)]
+
+
+        from pyspark.ml.clustering import KMeans
+        from pyspark.ml.feature import VectorAssembler
+        
+        data.columns
+        ['area',
+         'perimeter',
+         'compactness',
+         'length_of_kernel',
+         'width_of_kernel',
+         'asymmetry_coefficient',
+         'length_of_groove']
+         
+        assembler = VectorAssembler(inputCols=data.columns, outputCol='features')
+        
+        final_data = assembler.transform(data)
+        
+        final_data.printSchema()
+        
+        root
+         |-- area: double (nullable = true)
+         |-- perimeter: double (nullable = true)
+         |-- compactness: double (nullable = true)
+         |-- length_of_kernel: double (nullable = true)
+         |-- width_of_kernel: double (nullable = true)
+         |-- asymmetry_coefficient: double (nullable = true)
+         |-- length_of_groove: double (nullable = true)
+         |-- features: vector (nullable = true)
+
+**Since a lot of machine learning algorithm object don't mind having a bunch of extra columns (they don't read them) they won't do anything with them, they just look for features column and (in case of supervised also they look for label column) so I don't need to perform the following one line of code**: 
+
+my_final_data = final_data.select('features')
+        
+        from pyspark.ml.feature import StandardScaler
+        
+        scaler = StandardScaler(inputCol='features', outputCol='scaledFeatures')
+        scaler_model = scaler.fit(final_data)
+        final_data = scaler_model.transform(final_data)
+        final_data.printSchema()
+        
+        root
+         |-- area: double (nullable = true)
+         |-- perimeter: double (nullable = true)
+         |-- compactness: double (nullable = true)
+         |-- length_of_kernel: double (nullable = true)
+         |-- width_of_kernel: double (nullable = true)
+         |-- asymmetry_coefficient: double (nullable = true)
+         |-- length_of_groove: double (nullable = true)
+         |-- features: vector (nullable = true)
+         |-- scaledFeatures: vector (nullable = true)
+
+        final_data.head(1)
+        
+        [Row(area=15.26, perimeter=14.84, compactness=0.871, length_of_kernel=5.763, width_of_kernel=3.312, asymmetry_coefficient=2.221, length_of_groove=5.22, features=DenseVector([15.26, 14.84, 0.871, 5.763, 3.312, 2.221, 5.22]), scaledFeatures=DenseVector([5.2445, 11.3633, 36.8608, 13.0072, 8.7685, 1.4772, 10.621]))]
+        kmeans = KMeans(featuresCol='scaledFeatures', k=3)
+
+So you can see that there is a change between the features and the scaled features, but it's not a huge change. This becomes more important when you have not just high dimensions of data, meaning many features, but you also have orders of magnitude varying a lot between your actual data. So maybe you have one column that's in units of thousands of miles or something, and then you have another column that's in units of millimeters. Those kind of things can also be improved upon using some sort of scaling technique.
+
+        model = kmeans.fit(final_data)
+        
+        print (f" wssse is equal to {model.summary.trainingCost}")
+         wssse is equal to 429.07559671507244
+         
+        centers = model.clusterCenters()
+        centers
+        [array([ 4.87257659, 10.88120146, 37.27692543, 12.3410157 ,  8.55443412,
+                 1.81649011, 10.32998598]),
+         array([ 6.31670546, 12.37109759, 37.39491396, 13.91155062,  9.748067  ,
+                 2.39849968, 12.2661748 ]),
+         array([ 4.06105916, 10.13979506, 35.80536984, 11.82133095,  7.50395937,
+                 3.27184732, 10.42126018])]
+                 
+        model.transform(final_data).select('prediction').show()
+        
+        +----------+
+        |prediction|
+        +----------+
+        |         0|
+        |         0|
+        |         0|
+        |         0|
+        |         0|
+        |         0|
+        |         0|
+        |         0|
+        |         1|
+        |         1|
+        |         0|
+        |         0|
+        |         0|
+        |         0|
+        |         0|
+        |         0|
+        |         0|
+        |         0|
+        |         0|
+        |         2|
+        +----------+
+        only showing top 20 rows
+
+47. Content-Based vs. Collaborative filtering for recommender systerms 
+
+The two most common types of recommender systems are Content-Based and Collaborative Filtering (CF).
+
++ **Collaborative filtering** produces recommendations based on the knowledge of users’ attitude towards items, that is it uses the **"wisdom of the crowd"** to recommend items.
+
++ **Content-based recommender** systems focus on the attributes of the items and give you recommendations based on the similarity between them.
+
+some points:
+
++ In general, **Collaborative filtering (CF) is more commonly used than content-based systems** because it usually gives better results and is relatively easy to understand (from an overall implementation perspective). 
+
++ The algorithm has the ability to do feature learning on its own, which means that it can start to learn for itself what features to use.
+
++ These techniques aim to fill in the missing entries of a user-item association matrix. 
+
++ spark.ml currently supports model-based collaborative filtering, in which users and products are described by a small set of latent factors that can be used to predict missing entries.
+
++ spark.ml uses the **alternating least squares (ALS)** algorithm to learn these latent factors.
+
++ Your data needs to be in a specific format to work with Spark’s ALS Recommendation Algorithm!
+
++ ALS is basically a Matrix Factorization approach to implement a recommendation algorithm you decompose your large user/item matrix into lower dimensional user factors and item factors.
+
++ The hard part is getting your data into the specific format and getting enough of it.
+
+48. Here is a code for building a recommender system:
+
+        import findspark
+        findspark.init("/home/danial/spark-3.3.2-bin-hadoop3/")
+
+        from pyspark.sql import SparkSession
+        spark = SparkSession.builder.appName('recommender').getOrCreate()
+
+        path = '/home/danial/Desktop/myspark/Apache-Spark/Python-and-Spark-for-Big-Data-master/Spark_for_Machine_Learning/Recommender_Systems/movielens_ratings.csv'
+
+        data = spark.read.csv(path, header=True, inferSchema=True)
+        data.show()
+
+        +-------+------+------+
+        |movieId|rating|userId|
+        +-------+------+------+
+        |      2|   3.0|     0|
+        |      3|   1.0|     0|
+        |      5|   2.0|     0|
+        |      9|   4.0|     0|
+        |     11|   1.0|     0|
+        |     12|   2.0|     0|
+        |     15|   1.0|     0|
+        |     17|   1.0|     0|
+        |     19|   1.0|     0|
+        |     21|   1.0|     0|
+        |     23|   1.0|     0|
+        |     26|   3.0|     0|
+        |     27|   1.0|     0|
+        |     28|   1.0|     0|
+        |     29|   1.0|     0|
+        |     30|   1.0|     0|
+        |     31|   1.0|     0|
+        |     34|   1.0|     0|
+        |     37|   1.0|     0|
+        |     41|   2.0|     0|
+        +-------+------+------+
+        only showing top 20 rows
+
+        data.describe().show()
+
+        +-------+------------------+------------------+------------------+
+        |summary|           movieId|            rating|            userId|
+        +-------+------------------+------------------+------------------+
+        |  count|              1501|              1501|              1501|
+        |   mean| 49.40572951365756|1.7741505662891406|14.383744170552964|
+        | stddev|28.937034065088994| 1.187276166124803| 8.591040424293272|
+        |    min|                 0|               1.0|                 0|
+        |    max|                99|               5.0|                29|
+        +-------+------------------+------------------+------------------+
+
+        from pyspark.ml.recommendation import ALS
+        from pyspark.ml.evaluation import RegressionEvaluator
+        
+        training, testing = data.randomSplit([0.8, 0.2])
+
+As mentioned, a big part of building a recommendation system that is intended to work with Python and spark is that you actually get your data into a specific format, which is attained through the following line of code: 
+
+        als = ALS(maxIter= 5, regParam=0.01, itemCol= 'movieId', userCol='userId', ratingCol='rating')
+        model = als.fit(training)
+
+        predictions = model.transform(testing)
+        predictions.show()
+        
+        +-------+------+------+-----------+
+        |movieId|rating|userId| prediction|
+        +-------+------+------+-----------+
+        |      1|   1.0|    28|  0.9663938|
+        |      5|   2.0|    26| 0.02526009|
+        |      4|   1.0|    12|  0.8127196|
+        |      3|   2.0|    22|  1.6282926|
+        |      3|   1.0|     1|  1.3922048|
+        |      4|   2.0|    13|   1.782724|
+        |      6|   1.0|    20| 0.24720451|
+        |      4|   1.0|     5|  1.3330386|
+        |      2|   1.0|    19|  1.5031521|
+        |      4|   1.0|    19|  1.8913373|
+        |      1|   4.0|    15|  1.3782326|
+        |      6|   1.0|    15|  1.0345336|
+        |      2|   1.0|    17|  1.9824493|
+        |      0|   1.0|    23|  2.1761677|
+        |      4|   1.0|    23| 0.94977033|
+        |      2|   4.0|    10|  3.7171347|
+        |      4|   1.0|    24|0.024004161|
+        |      2|   4.0|    21|  2.5022135|
+        |      0|   1.0|    11|  1.6437361|
+        |      5|   1.0|    14|  3.3678727|
+        +-------+------+------+-----------+
+        only showing top 20 rows
+        
+        evaluator = RegressionEvaluator(metricName='rmse', labelCol='rating', predictionCol='prediction')
+        rmse = evaluator.evaluate(predictions)
+
+        print (f"the RMSE is equal to {rmse}")
+        the RMSE is equal to 1.9813298445825118
+        
+        data.describe().show()
+        +-------+------------------+------------------+------------------+
+        |summary|           movieId|            rating|            userId|
+        +-------+------------------+------------------+------------------+
+        |  count|              1501|              1501|              1501|
+        |   mean| 49.40572951365756|1.7741505662891406|14.383744170552964|
+        | stddev|28.937034065088994| 1.187276166124803| 8.591040424293272|
+        |    min|                 0|               1.0|                 0|
+        |    max|                99|               5.0|                29|
+        +-------+------------------+------------------+------------------+
+
+SO the RMSE of 1.98 is too high given the fact that the rating values are in the range of 1 to 5! Which is because small dataset that we used!
+
+        single_user = testing.filter(testing['userId']==11).select(['movieId', 'userId'])
+        single_user.show()
+
+        +-------+------+
+        |movieId|userId|
+        +-------+------+
+        |      0|    11|
+        |     13|    11|
+        |     25|    11|
+        |     38|    11|
+        |     43|    11|
+        |     50|    11|
+        |     59|    11|
+        |     66|    11|
+        |     72|    11|
+        |     75|    11|
+        |     76|    11|
+        |     88|    11|
+        +-------+------+
+
+        recommendations = model.transform(single_user)
+        recommendations.orderBy('prediction', ascending = False).show()
+        +-------+------+------------+
+        |movieId|userId|  prediction|
+        +-------+------+------------+
+        |     76|    11|   5.5854764|
+        |     25|    11|    5.083869|
+        |     66|    11|    3.925778|
+        |     50|    11|   3.5083916|
+        |      0|    11|   1.6437361|
+        |     13|    11|   1.5627245|
+        |     75|    11|   1.1251544|
+        |     88|    11|  0.47486284|
+        |     59|    11|-0.043731105|
+        |     38|    11| -0.14139383|
+        |     72|    11| -0.66860205|
+        |     43|    11|  -1.7488561|
+        +-------+------+------------+
+
+
+side note: Keep in mind, it's actually really hard to know conclusively how well a recommender system did, especially for a certain topics that **subjectivity is involved**. For example, not everyone that loves Star Wars is going to love Star Trek, even if they're both science fiction. Certain users or certain people just aren't going to like the same things, especially when subjectivity is involved with creative items like books or movies, etc.
+
+
+**Cold Start:**
+
+There's also something called a cold start problem, and the cold start problem is what do you do if users that are new to your platform and haven't seen any movies whatsoever? Well, there's different ways of trying to solve that. You could give them a quick survey on what movies have they watched? Can you quickly rate them for us? You can also just say, Hey, are you similar to user X, Y or Z, which is typical profile, etc. So those are more domain knowledge issues than actual algorithmic issues. But keep that in mind Cold Start is definitely a problem with recommendation systems in general.
+
+**49. Spark Streaming with Python**
+
+Documented in the coding jupyter notebook file. 
 
 
 
