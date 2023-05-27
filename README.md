@@ -1,6 +1,6 @@
 # Apache-Spark
 
-This repo documents my understanding of Apache Spark and how it differs from Pandas. The theories and course notes are detailed in the following. My solution to all coding assignments are incorporated in the jupyter notebook files attached to this repo.
+This repo documents my understanding of Apache Spark and how it comes to rescue with big data where Pandas has limitations. The theories and course notes are detailed in the following. My solution to all coding assignments are incorporated in the jupyter notebook files attached to this repo.
 
 course: 
 Spark and Python for Big Data by Jose Portilla on udemy
