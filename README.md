@@ -14,9 +14,9 @@ Here is the structure of my notes:
     6. [Distributed architecture of Hadoop](#8)
         1. [Distributed storage - HDFS](#9)
         2. [MapReduce](#10)
-    7. [Spark vs. MapReduce](#8)
-    8. [How is Spark so fast](#9)
-    9. [Spark RRD vs. Spark DataFrame](#10)
+    7. [Spark](#11)
+        1. [How is Spark so fast](#9)
+        2. [Spark RRD vs. Spark DataFrame](#10)
 2. [Spark DataFrame Basics](#11)
     1. [
 3. [ML with MLlib](#)
@@ -101,16 +101,17 @@ So we kind of have two fundamental ideas here:
 #### MapReduce
 
 + MapReduce is a way of splitting a **computation task** to a distributed set of files (such as HDFS)
-+ It consists of a Job Tracker and multiple Task Trackers: 
++ It consists of a Job Tracker and multiple Task Trackers (the idea of trackers also goes along with Spark): 
   
     + The Job Tracker sends code to run on the Task Trackers
     + The Task Trackers allocate CPU and memory for the tasks and monitor the tasks on the worker nodes
 
-10. What we covered can be thought of in two distinct parts:
-    + Using HDFS to distribute large data sets
-    + Using MapReduce to distribute a computational task to a distributed data set
+What we discussed can be thought of in two distinct parts:
 
-Spark improves on the concepts of using distribution
++ Using HDFS to distribute large data sets
++ Using MapReduce to distribute a computational task to a distributed data set
+
+**Spark improves on the concepts of using distribution**
 
 11. Spark is a flexible alternative to MapReduce NOT to Hadoop
 
