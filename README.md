@@ -11,9 +11,12 @@ Here is the structure of my notes:
     5. [Advantages of a distributed system](#5)
         1. [Scaling](#6)
         2. [Fault-tolerance](#7)
-    6. [Spark vs. MapReduce](#8)
-    7. [How is Spark so fast](#9)
-    8. [Spark RRD vs. Spark DataFrame](#10)
+    6.[Distributed architecture of Hadoop](#8)
+        1. [Distributed storage - HDFS](#9)
+        2. [MapReduce](#10)
+    7. [Spark vs. MapReduce](#8)
+    8. [How is Spark so fast](#9)
+    9. [Spark RRD vs. Spark DataFrame](#10)
 2. [Spark DataFrame Basics](#11)
     1. [
 3. [ML with MLlib](#)
@@ -53,10 +56,10 @@ A local system is probably what you're used to. It's just a single machine, a si
 In a distributed system, you have one main computer, some sort of **master node**, and you also have data and calculations distributed onto the other computers. A distributed process has access to the computational resources across a number of machines connected through a network. 
 
 <a name="5"></a>
-#### Advantages of a distributed system
+### Advantages of a distributed system
 
 <a name="6"></a>
-##### Scaling
+#### Scaling
 
 + After a certain point, it's much easier to scale out to many lower CPU machines in a distributed system, than try to scale up to a single machine with a high CPU
 + distributed machines also have the advantage of easily scaling. All you have to do is just add more machines versus a single computer.
@@ -64,14 +67,15 @@ In a distributed system, you have one main computer, some sort of **master node*
 No matter how nice it is, there's going to be a limit on how much ram or how much storage you can add to a single machine. So in distributed machines, you can just keep adding systems to the network and just get more power
 
 <a name="7"></a>
-##### Fault-tolerance
+#### Fault-tolerance
 
-Distributed machines also include fault tolerance, which is really important when you're talking about large data sets. If one machine fails, the whole network can still go on, which you can't do on a local machine if your local machine crashes due to some error in the calculation you just lost all your calculation, all your data and fault tolerance is a fundamental idea where you're going to be replicating your data across multiple machines. So even if one goes down, your calculations and your data still persists and goes on.
+Distributed machines also include fault tolerance, which is really important when you're talking about large data sets. If one machine fails, the whole network can still go on, which you can't do on a local machine if your local machine crashes due to some error in the calculation you just lose all your calculations, all your data. Fault tolerance is a fundamental idea where you're going to be replicating your data across multiple machines. So even if one goes down, your calculations and your data still persist and go on.
 
-7. Distributed architecture of Haddop
+<a name="8"></a>
+### Distributed architecture of Hadoop
 
     + Hadoop is a way to distribute very large files across multiple machines.
-    + It uses the Hadoop Distributed File System (HDFS)
+    + It uses the 'Hadoop Distributed File System (HDFS)'
     + HDFS allows a user to work with large data sets
     + HDFS also duplicates blocks of data for fault tolerance
     + It also then uses MapReduce
@@ -83,7 +87,9 @@ So we kind of have two fundamental ideas here:
 
 + And then we have the idea of MapReduce, which allows computations across the distributed data set.
 
-8. Distributed storage - HDFS
+<a name="9"></a>
+#### Distributed storage - HDFS
+
     + HDFS will use blocks of data, with a size of 128 MB by default
     + Each of these blocks is replicated 3 times
     + The blocks are distributed in a way to support fault tolerance
@@ -91,10 +97,14 @@ So we kind of have two fundamental ideas here:
     + Multiple copies of a block prevent loss of data due to a failure of a node
 
 
-9. MapReduce
+<a name="10"></a>
+#### MapReduce
 
-    + MapReduce is a way of splitting a **computation task** to a distributed set of files (such as HDFS)
-    + It consists of a Job Tracker and multiple Task Trackers
++ MapReduce is a way of splitting a **computation task** to a distributed set of files (such as HDFS)
++ It consists of a Job Tracker and multiple Task Trackers: 
+  
+    + The Job Tracker sends code to run on the Task Trackers
+    + The Task Trackers allocate CPU and memory for the tasks and monitor the tasks on the worker nodes
 
 10. What we covered can be thought of in two distinct parts:
     + Using HDFS to distribute large data sets
