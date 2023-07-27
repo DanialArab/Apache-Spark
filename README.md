@@ -90,11 +90,11 @@ So we kind of have two fundamental ideas here:
 <a name="9"></a>
 #### Distributed storage - HDFS
 
-    + HDFS will use blocks of data, with a size of 128 MB by default
-    + Each of these blocks is replicated 3 times
-    + The blocks are distributed in a way to support fault tolerance
-    + Smaller blocks provide more parallelization during processing
-    + Multiple copies of a block prevent loss of data due to a failure of a node
++ HDFS will use blocks of data, with a size of 128 MB by default
++ Each of these blocks is replicated 3 times
++ The blocks are distributed in a way to support fault tolerance
++ Smaller blocks provide more parallelization during processing
++ Multiple copies of a block prevent loss of data due to a failure of a node
 
 
 <a name="10"></a>
