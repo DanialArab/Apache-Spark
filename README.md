@@ -18,7 +18,9 @@ Here is the structure of my notes:
         1. [Spark vs. MapReduce](#12)
         2. [How is Spark so fast?](#13)
         3. [Spark RRD](#14)
-        4. [Spark DataFrame](#15)
+        4. [Spark operations](#15)
+           1. [Transformations vs. actions behavior](#16)
+        5. [Spark DataFrame](#17)
 2. [Spark DataFrame Basics](#11)
     1. [
 3. [ML with MLlib](#)
@@ -146,26 +148,36 @@ Spark also can perform operations up to 100x faster than MapReduce
 <a name="14"></a>
 #### Spark RRD 
 
-At the core of Spark is the idea of a Resilient Distributed Dataset (RDD)
-Resilient Distributed Dataset (RDD) has 4 main features:
+At the core of Spark is the idea of a **Resilient Distributed Dataset (RDD)**.
+
+Resilient Distributed Dataset has 4 main features:
 
 + Distributed Collection of Data
 + Fault-tolerant
-+ Parallel operation - partioned
++ Parallel operation - partitioned
 + Ability to use many data sources
 
 RDDs are **immutable, lazily evaluated, and cacheable**
+
+<a name="15"></a>
+#### Spark operations
 
 There are two types of Spark operations:
 
 + Transformations: Transformations are basically a recipe to follow.
 + Actions: Actions actually perform what the recipe says to do and returns something back.
 
-15. Transformations vs actions behavior 
+<a name="16"></a>
+##### Transformations vs. actions behavior 
 
-The behavior of transformations versus actions also carries over to the syntax when coding. A lot of times when you write a method call off of a data frame which we're going to be working with with pyspark, you won't see anything as a result until you call an action something like show. And this makes sense because if you're working with a really large data set, you don't want to constantly be calculating all the transformations. Maybe a transformation can be something like take the average or take the count of a particular data, or show me where column X is greater than the number two, etc. like that. But you don't want to actually calculate that every time until you're sure you want to perform it because it's such a huge data set. It's quite a task to calculate everything every time you type something. So that's why everything is separated between transformations and then those calls to action.
+The behavior of transformations versus actions also carries over to the syntax when coding. A lot of times when you write a method call off of a data frame which we're going to be working with pyspark, you won't see anything as a result until you call an action something like show. And this makes sense because if you're working with a really large data set, you don't want to constantly be calculating all the transformations. Maybe a transformation can be something like take the average or take the count of a particular data, or show me where column X is greater than the number two, etc. like that. But you don't want to actually calculate that every time until you're sure you want to perform it because it's such a huge data set. It's quite a task to calculate everything every time you type something. So that's why everything is separated between transformations and then those calls to action.
 
-16. Spark DataFrames are also now the standard way of using Spark’s Machine Learning Capabilities.
+<a name="17"></a>
+#### Spark DataFrame 
+
++ When discussing Spark syntax, the coding syntax, we will see RDD syntax vs. DataFrame syntax
++ With the release of Spark 2.0, Spark is moving towards a DataFrame-based syntax, but keep in mind that the way files are being distributed physically can still be thought of as RDD, it is just the typed-out syntax that is changing.
++ Spark DataFrames are now the standard way of using Spark’s Machine Learning Capabilities.
 
 17. why Linux? 
 
