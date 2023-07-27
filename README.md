@@ -35,7 +35,6 @@ Here is the structure of my notes:
     7. [Spark Streaming with Python](#)
 4. [Apache Spark vs. Pandas](#)
 
-   
 <a name="1"></a>
 ## Introduction 
 
