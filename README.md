@@ -15,8 +15,10 @@ Here is the structure of my notes:
         1. [Distributed storage - HDFS](#9)
         2. [MapReduce](#10)
     7. [Spark](#11)
-        1. [How is Spark so fast](#9)
-        2. [Spark RRD vs. Spark DataFrame](#10)
+        1. [Spark vs. MapReduce](#12)
+        2. [How is Spark so fast?](#13)
+        3. [Spark RRD](#14)
+        4. [Spark DataFrame](#15)
 2. [Spark DataFrame Basics](#11)
     1. [
 3. [ML with MLlib](#)
@@ -113,31 +115,36 @@ What we discussed can be thought of in two distinct parts:
 
 **Spark improves on the concepts of using distribution**
 
-11. Spark is a flexible alternative to MapReduce NOT to Hadoop
+<a name="11"></a>
+### Spark 
+
++ Spark is one of the latest technologies being used to quickly and easily handle big data
++ Spark is an open-source project on Apache 
++ Spark is a flexible alternative to MapReduce NOT to Hadoop
 
 So don't think of spark in the concepts of Hadoop versus Spark, but instead  MapReduce versus Spark.
 
-12. Spark vs MapReduce
+<a name="12"></a>
+#### Spark vs. MapReduce
 
-    + MapReduce requires files to be stored in HDFS, Spark does not! Spark can use data stored in a variety of formats
++ MapReduce requires files to be stored in HDFS, Spark does not! Spark can use data stored in a variety of formats
     
-            Cassandra
++ Cassandra
++ AWS S3
++ HDFS
++ And more
 
-            AWS S3
+<a name="13"></a>
+#### How is Spark so fast?
 
-            HDFS
+Spark also can perform operations up to 100x faster than MapReduce
 
-            And more
++ MapReduce writes most data to disk after each map and reduce operation
++ Spark keeps most of the data in memory after each transformation
++ Spark can spill over to disk if the memory is filled
 
-    + Spark also can perform operations up to 100x faster than MapReduce
- 
-13. So how does spark achieve this speed?
-
-    + MapReduce writes most data to disk after each map and reduce operation
-    + Spark keeps most of the data in memory after each transformation
-    + Spark can spill over to disk if the memory is filled
-
-14. Spark RRD 
+<a name="14"></a>
+#### Spark RRD 
 
 At the core of Spark is the idea of a Resilient Distributed Dataset (RDD)
 Resilient Distributed Dataset (RDD) has 4 main features:
