@@ -1,5 +1,8 @@
+# Apache-Spark
 
-Here is the summary of my notes from the course <a href="https://www.udemy.com/course/spark-and-python-for-big-data-with-pyspark/?utm_source=adwords&utm_medium=udemyads&utm_campaign=Webindex_Catchall_la.EN_cc.CA&utm_term=_._ag_119831896715_._ad_533102824920_._kw__._de_c_._dm__._pl__._ti_dsa-392284169515_._li_9001494_._pd__._&matchtype=&gclid=Cj0KCQjwiIOmBhDjARIsAP6YhSUQcjYp_yVRKuBsf8-vQMvg9cYbeRWiB5dJchKx6zZMSHmkROT5zqMaAnzIEALw_wcB">Complete SQL Mastery</a>. The structure of my notes is as follows:
+This repo documents my understanding of Apache Spark and how it comes to rescue with big data where Pandas has limitations. The theories and my notes from the course <a href="https://www.udemy.com/course/spark-and-python-for-big-data-with-pyspark/?utm_source=adwords&utm_medium=udemyads&utm_campaign=Webindex_Catchall_la.EN_cc.CA&utm_term=_._ag_119831896715_._ad_533102824920_._kw__._de_c_._dm__._pl__._ti_dsa-392284169515_._li_9001494_._pd__._&matchtype=&gclid=Cj0KCQjwiIOmBhDjARIsAP6YhSUQcjYp_yVRKuBsf8-vQMvg9cYbeRWiB5dJchKx6zZMSHmkROT5zqMaAnzIEALw_wcB">Spark and Python for Big Data with PySpark</a>.are detailed in the following. My solutions to all coding assignments are incorporated in the Jupyter notebook files attached to this repo.
+
+Here is the summary of my notes  The structure of my notes is as follows:
 
 1. [Introduction](#1)
     1. [What is a Database?](#2)
@@ -10,11 +13,6 @@ Here is the summary of my notes from the course <a href="https://www.udemy.com/c
    
 <a name="1"></a>
 ### Introduction 
-
-
-# Apache-Spark
-
-This repo documents my understanding of Apache Spark and how it comes to rescue with big data where Pandas has limitations. The theories and course notes are detailed in the following. My solution to all coding assignments are incorporated in the jupyter notebook files attached to this repo.
 
 course: 
 Spark and Python for Big Data by Jose Portilla on udemy
