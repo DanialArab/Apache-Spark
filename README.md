@@ -7,21 +7,23 @@ Here is the structure of my notes:
 1. [Introduction](#1)
     1. [Why Spark?](#2)
     2. [What is big data and how to handle it?](#3)
-    4. [Local vs. distributed system](#4)
-    5. [Advantages of a distributed system](#5)
+    3. [Local vs. distributed system](#4)
+    4. [Advantages of a distributed system](#5)
         1. [Scaling](#6)
         2. [Fault-tolerance](#7)
-    6. [Distributed architecture of Hadoop](#8)
+    5. [Distributed architecture of Hadoop](#8)
         1. [Distributed storage - HDFS](#9)
         2. [MapReduce](#10)
-    7. [Spark](#11)
+    6. [Spark](#11)
         1. [Spark vs. MapReduce](#12)
         2. [How is Spark so fast?](#13)
         3. [Spark RRD](#14)
         4. [Spark operations](#15)
            1. [Transformations vs. actions behavior](#16)
         5. [Spark DataFrame](#17)
-2. [Spark DataFrame Basics](#11)
+     7. [Why Linux?](#18)
+     8. [Installation of findspark library](#19)
+2. [Spark DataFrame](#20)
     1. [
 3. [ML with MLlib](#)
     1. [Linear Regression]()
@@ -179,17 +181,19 @@ The behavior of transformations versus actions also carries over to the syntax w
 + With the release of Spark 2.0, Spark is moving towards a DataFrame-based syntax, but keep in mind that the way files are being distributed physically can still be thought of as RDD, it is just the typed-out syntax that is changing.
 + Spark DataFrames are now the standard way of using Spark’s Machine Learning Capabilities.
 
-17. why Linux? 
+<a name="18"></a>
+### Why Linux? 
 
-Realistically Spark won't be running on a single machine. That's basically the whole point of spark. Your data is so large that it no longer fits on a single machine and you're going to need to run it on a cluster on a service like Google Cloud or Amazon Web Services. **And these cluster services will pretty much always be on a Linux based system.** They're not running Mac OS or Windows.
+Realistically Spark won't be running on a single machine. That's basically the whole point of Spark. Your data is so large that it no longer fits on a single machine and you're going to need to run it on a cluster on a service like Google Cloud or Amazon Web Services. **And these cluster services will pretty much always be on a Linux-based system.** They're not running Mac OS or Windows.
 
-Employers and the real world is really focused on Linux when it comes to spark, which makes sense because if you're running it on a cluster, it's going to be on a Linux based system.
+Employers and the real world is really focused on Linux when it comes to Spark, which makes sense because if you're running it on a cluster, it's going to be on a Linux-based system.
 
-18. findspark library
+<a name="19"></a>
+### Installation of findspark library
 
-I need to install find Spark library to not be needing to change directory every time and instead, being able to import Spark from any directory so I don't have to worry about changing directory to that spark home directory.
+I need to install find Spark library to not be needing to change the directory every time and instead, being able to import Spark from any directory so I don't have to worry about changing the directory to that Spark home directory.
 
-**pip3 install findspark **
+    pip3 install findspark 
 
 then 
 
@@ -197,7 +201,11 @@ then
     findspark.init('/home/danial/spark-3.3.2-bin-hadoop3')
     import pyspark 
 
-19. Intro to Spark DF 
+<a name="20"></a>
+## Spark DataFrame
+HERE
+
+Intro to Spark DF 
 
 Spark in its early days began with something known as the **RDD syntax**, which was a little ugly and a bit tricky to learn. Fortunately, now, Spark 2.0 and higher has shifted towards a **data frame syntax**, which is much cleaner and easier to work with. And this **data frame syntax looks really similar across all the APIs**, which is nice. Meaning if you've already done a course in something like Scala and Spark Learning Python and Spark data frames is really easy. A lot of that stuff looks extremely similar.
 
