@@ -74,12 +74,12 @@ Distributed machines also include fault tolerance, which is really important whe
 <a name="8"></a>
 ### Distributed architecture of Hadoop
 
-    + Hadoop is a way to distribute very large files across multiple machines.
-    + It uses the 'Hadoop Distributed File System (HDFS)'
-    + HDFS allows a user to work with large data sets
-    + HDFS also duplicates blocks of data for fault tolerance
-    + It also then uses MapReduce
-    + MapReduce allows computations on that data
++ Hadoop is a way to distribute very large files across multiple machines.
++ It uses the 'Hadoop Distributed File System (HDFS)'
++ HDFS allows a user to work with large data sets
++ HDFS also duplicates blocks of data for fault tolerance
++ It also then uses MapReduce
++ MapReduce allows computations on that data
 
 So we kind of have two fundamental ideas here:
 
