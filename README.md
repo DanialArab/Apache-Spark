@@ -11,7 +11,7 @@ Here is the structure of my notes:
     5. [Advantages of a distributed system](#5)
         1. [Scaling](#6)
         2. [Fault-tolerance](#7)
-    6.[Distributed architecture of Hadoop](#8)
+    6. [Distributed architecture of Hadoop](#8)
         1. [Distributed storage - HDFS](#9)
         2. [MapReduce](#10)
     7. [Spark vs. MapReduce](#8)
