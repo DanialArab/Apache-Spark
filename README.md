@@ -7,8 +7,7 @@ Here is the structure of my notes:
 1. [Introduction](#1)
     1. [Why Spark?](#2)
     2. [What is big data and how to handle it?](#3)
-    3. [Non-relational databases](#4)
-    4. [Local vs. distributed system](#5)
+    4. [Local vs. distributed system](#4)
         1. [Scaling](#6)
         2. [Fault-tolerance](#7)
     5. [Spark vs. MapReduce](#8)
@@ -30,32 +29,27 @@ Here is the structure of my notes:
 <a name="1"></a>
 ## Introduction 
 
+<a name="2"></a>
+### Why Spark?
 
++ Spark runs programs up to **100x faster than Hadoop MapReduce in memory**
 
+<a name="3"></a>
+### What is big data and how to handle it
 
+Data that can fit on a local computer, on the scale of 0-32 GB depending on RAM, is **NOT** big data. But what can we do if we have a larger set of data?
 
-# Course Notes
++ **Try using a SQL database to move storage onto a hard drive instead of RAM**
++ **Or use a distributed system, that distributes the data to multiple machines/computers. This is where Spark comes to play.**
 
-sources: Spark and Python for Big Data class by Jose Portilla on udemy
+If you're using Spark, you're at a point where it no longer makes sense to fit all your data on RAM and it no longer makes sense to fit all your data into a single machine.
 
-1. Spark runs programs up to 100x faster than Hadoop MapReduce in memory 
+<a name="4"></a>
+### Local vs. distributed system: 
 
-2. What is big datta?
-Data that can fit on a local computer, in the scale of 0-32 GB depending on RAM, is not big data. 
+a local system is probably what you're used to. It's just a single machine, a single computer. It all shares the same ram, the same hard drive. A local process will use the computation resources of a single machine. 
 
-3. But what can we do if we have a larger set of data?
-
-    + **Try using a SQL database to move storage onto hard drive instead of RAM**
-    
-    + **Or use a distributed system, that distributes the data to multiple machines/computer. This is where Spark comes to play.**
-
-If you're using spark, you're at a point where it no longer makes sense to fit all your data on RAM and it no longer makes sense to fit all your data into a single machine.
-
-4. Local vs. distributed system: 
-
-a local system is probably what you're used to. It's just a single machine, a single computer.It all shares the same ram, the same hard drive. A local process will use the computation resources of a single machine. 
-
-In a distributed system, you have one main computer, some sort of master node, and you also have data and calculations distributed onto the other computers. A distributed process has access to the computational resources across a number of machines connected through a network. 
+In a distributed system, you have one main computer, some sort of **master node**, and you also have data and calculations distributed onto the other computers. A distributed process has access to the computational resources across a number of machines connected through a network. 
 
 5. Scaling
 
