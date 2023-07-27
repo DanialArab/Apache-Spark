@@ -8,11 +8,12 @@ Here is the structure of my notes:
     1. [Why Spark?](#2)
     2. [What is big data and how to handle it?](#3)
     4. [Local vs. distributed system](#4)
+    5. [Advantages of a distributed system](#5)
         1. [Scaling](#6)
         2. [Fault-tolerance](#7)
-    5. [Spark vs. MapReduce](#8)
-    6. [How is Spark so fast](#9)
-    7. [Spark RRD vs. Spark DataFrame](#10)
+    6. [Spark vs. MapReduce](#8)
+    7. [How is Spark so fast](#9)
+    8. [Spark RRD vs. Spark DataFrame](#10)
 2. [Spark DataFrame Basics](#11)
     1. [
 3. [ML with MLlib](#)
@@ -47,18 +48,23 @@ If you're using Spark, you're at a point where it no longer makes sense to fit a
 <a name="4"></a>
 ### Local vs. distributed system: 
 
-a local system is probably what you're used to. It's just a single machine, a single computer. It all shares the same ram, the same hard drive. A local process will use the computation resources of a single machine. 
+A local system is probably what you're used to. It's just a single machine, a single computer. It all shares the same ram, the same hard drive. A local process will use the computation resources of a single machine. 
 
 In a distributed system, you have one main computer, some sort of **master node**, and you also have data and calculations distributed onto the other computers. A distributed process has access to the computational resources across a number of machines connected through a network. 
 
-5. Scaling
+<a name="5"></a>
+#### Advantages of a distributed system
+
+<a name="6"></a>
+##### Scaling
 
 + After a certain point, it's much easier to scale out to many lower CPU machines in a distributed system, than try to scale up to a single machine with a high CPU
 + distributed machines also have the advantage of easily scaling. All you have to do is just add more machines versus a single computer.
 
 No matter how nice it is, there's going to be a limit on how much ram or how much storage you can add to a single machine. So in distributed machines, you can just keep adding systems to the network and just get more power
 
-6. Fault-tolerance
+<a name="7"></a>
+##### Fault-tolerance
 
 Distributed machines also include fault tolerance, which is really important when you're talking about large data sets. If one machine fails, the whole network can still go on, which you can't do on a local machine if your local machine crashes due to some error in the calculation you just lost all your calculation, all your data and fault tolerance is a fundamental idea where you're going to be replicating your data across multiple machines. So even if one goes down, your calculations and your data still persists and goes on.
 
