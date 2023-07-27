@@ -5,103 +5,34 @@ This repo documents my understanding of Apache Spark and how it comes to rescue 
 Here is the structure of my notes:
 
 1. [Introduction](#1)
-    1. [What is a Database?](#2)
-    2. [Relational DBMS](#3)
+    1. [Why Spark?](#2)
+    2. [What is big data and how to handle it?](#3)
     3. [Non-relational databases](#4)
-    4. [Course structure](#5)
+    4. [Local vs. distributed system](#5)
+        1. [Scaling](#6)
+        2. [Fault-tolerance](#7)
+    5. [Spark vs. MapReduce](#8)
+    6. [How is Spark so fast](#9)
+    7. [Spark RRD vs. Spark DataFrame](#10)
+2. [Spark DataFrame Basics](#11)
+    1. [
+3. [ML with MLlib](#)
+    1. [Linear Regression]()
+    2. [Logistic Regression](#)
+    3. [Decision trees and Random Forest](#)
+    4. [K-means Clustering](#)
+    5. [Collaborative Filtering for Recommender Systems](#)
+    6. [NLP](#)
+    7. [Spark Streaming with Python](#)
+4. [Apache Spark vs. Pandas](#)
 
    
 <a name="1"></a>
-### Introduction 
-
-course: 
-Spark and Python for Big Data by Jose Portilla on udemy
+## Introduction 
 
 
 
 
-# Apache Spark vs. Pandas 
-
-source: https://www.youtube.com/watch?v=XrpSRCwISdk
-
-Apache Spark is an open-source distributed computing system designed for processing large datasets. It runs on distributed compute like YARN, Mesos, Standalone cluster.
-
-PySpark is the Python API for Apache Spark.
-
-Apache Spark has two main abstractions: 
-+ RDD - distributed collection of objects
-+ Dataframe - distributed dataset of tabular data.
-  + Integrated SQL
-  + ML Algorithms 
-
-Gain and lose of using PySpark over Pandas:
-
-Gain:
-+ Ability to work with big data
-+ Native SQL support 
-+ Decent documentation
-
-Lose:
-+ Amazing documentation
-+ easy plotting
-+ indices
-
-Pandas:
-  + df = pd.read_csv (path_to_csv_file) 
-  + df
-  + df.head (10)
-  + df.columns 
-  + df.dtypes
-  + df.columns = ['a', 'b'] 
-  + df.rename(columns = {'old': 'new'}) 
-  + df.drop ('mpg', axis = 1) 
-  + df[df.mpg < 20] 
-  + df['gpm'] = 1 / df.mpg
-  + df.fillna(0)
-  + df.groupby(['cyl', 'gear']).agg({'mpg': 'mean', 'disp': 'min'}) 
-  + import numpy as np
-    + df['logdisp'] = np.log(df.disp) 
-  + left.merge(right, on = 'key')
-  + left.merge(right, left_an = 'a', right_on = 'b') 
-  + pd.pivot_table(df, values = 'D', index = ['A', 'B'], columns = [ 'C'] , aggfunc = np.sum)
-  + df.describe()
-  + df.hist()
-  + no SQL support, there are third party libraries which support SQL like pandasql (open-source) and yhat (commercial) though 
-
-
-  
-PySpark:
-  + df = spark.read.csv(path_to_csv_file, header=True, inferSchema=True)
-  + df.show()
-  + df.show (10)
-  + df.columns 
-  + df.dtypes
-  + df.toDF('a', 'b') because Spark dataframes are immutable we cannot just make assignments and instead we have to actually craete a new dataframe with those names
-  + df.withColumnRenamed('old', 'new') 
-  + df.drop ('mpg') we don't have an axis concept here unlike in Pandas and we don't have index and so the only thing we can do is to drop columns 
-  + df[df.mpg < 20] 
-  + df.withColumn('gpm', 1 / df.mpg) again because of immutability we cannot make just assignment. Devision by zero in Pandas gives infinity but in Spark gives Null 
-  + df.fillna(0) much less options compared to Pandas 
-  + df.groupby(['cyl', 'gear']).agg({'mpg': 'mean', 'disp': 'min'}) 
-  + import pyspark.sql.functions as F --> this keeps compute in the JVM and not running any python in the executor meaning it is faster 
-    + df.withColumn ('logdisp', F.log(df.disp))
-  + left.join(right, on = 'key')
-  + left.join(right, left.a == right.b) 
-  + df.groupBy("A", "B ").pivot("C").sum("D")
-  + df.describe().show() (only count, mean, stddev, min, max, NO Quartiles) to get quartiles we need more code using built-in function called percentile_approx 
-  + df.sample(False, 0.1).toPandas().hist()
-  + great SQL support 
-    + df.createOrReplaceTempView('foo')
-    + df2 = spark.sql('select * from foo')
-  
-  PySpark best practices:
-  + make sure to use pyspark.sql.functions and other built-in functions
-  + use the same version of python and packages on cluster as driver 
-  + learn about SSH port forwarding 
-  + MLlib for ML at scale, which is equivalent to scikit-learn but in PySpark  
-  + don't iterate through rows 
-  + do df.limit(5).toPandas() NOT df.toPandas().head() 
-     
 
 # Course Notes
 
@@ -1487,3 +1418,86 @@ Documented in the coding jupyter notebook file.
 
 
 
+<a name="1"></a>
+## Apache Spark vs. Pandas 
+
+source: https://www.youtube.com/watch?v=XrpSRCwISdk
+
+Apache Spark is an open-source distributed computing system designed for processing large datasets. It runs on distributed compute like YARN, Mesos, Standalone cluster.
+
+PySpark is the Python API for Apache Spark.
+
+Apache Spark has two main abstractions: 
++ RDD - distributed collection of objects
++ Dataframe - distributed dataset of tabular data.
+  + Integrated SQL
+  + ML Algorithms 
+
+Gain and lose of using PySpark over Pandas:
+
+Gain:
++ Ability to work with big data
++ Native SQL support 
++ Decent documentation
+
+Lose:
++ Amazing documentation
++ easy plotting
++ indices
+
+Pandas:
+  + df = pd.read_csv (path_to_csv_file) 
+  + df
+  + df.head (10)
+  + df.columns 
+  + df.dtypes
+  + df.columns = ['a', 'b'] 
+  + df.rename(columns = {'old': 'new'}) 
+  + df.drop ('mpg', axis = 1) 
+  + df[df.mpg < 20] 
+  + df['gpm'] = 1 / df.mpg
+  + df.fillna(0)
+  + df.groupby(['cyl', 'gear']).agg({'mpg': 'mean', 'disp': 'min'}) 
+  + import numpy as np
+    + df['logdisp'] = np.log(df.disp) 
+  + left.merge(right, on = 'key')
+  + left.merge(right, left_an = 'a', right_on = 'b') 
+  + pd.pivot_table(df, values = 'D', index = ['A', 'B'], columns = [ 'C'] , aggfunc = np.sum)
+  + df.describe()
+  + df.hist()
+  + no SQL support, there are third party libraries which support SQL like pandasql (open-source) and yhat (commercial) though 
+
+
+  
+PySpark:
+  + df = spark.read.csv(path_to_csv_file, header=True, inferSchema=True)
+  + df.show()
+  + df.show (10)
+  + df.columns 
+  + df.dtypes
+  + df.toDF('a', 'b') because Spark dataframes are immutable we cannot just make assignments and instead we have to actually craete a new dataframe with those names
+  + df.withColumnRenamed('old', 'new') 
+  + df.drop ('mpg') we don't have an axis concept here unlike in Pandas and we don't have index and so the only thing we can do is to drop columns 
+  + df[df.mpg < 20] 
+  + df.withColumn('gpm', 1 / df.mpg) again because of immutability we cannot make just assignment. Devision by zero in Pandas gives infinity but in Spark gives Null 
+  + df.fillna(0) much less options compared to Pandas 
+  + df.groupby(['cyl', 'gear']).agg({'mpg': 'mean', 'disp': 'min'}) 
+  + import pyspark.sql.functions as F --> this keeps compute in the JVM and not running any python in the executor meaning it is faster 
+    + df.withColumn ('logdisp', F.log(df.disp))
+  + left.join(right, on = 'key')
+  + left.join(right, left.a == right.b) 
+  + df.groupBy("A", "B ").pivot("C").sum("D")
+  + df.describe().show() (only count, mean, stddev, min, max, NO Quartiles) to get quartiles we need more code using built-in function called percentile_approx 
+  + df.sample(False, 0.1).toPandas().hist()
+  + great SQL support 
+    + df.createOrReplaceTempView('foo')
+    + df2 = spark.sql('select * from foo')
+  
+  PySpark best practices:
+  + make sure to use pyspark.sql.functions and other built-in functions
+  + use the same version of python and packages on cluster as driver 
+  + learn about SSH port forwarding 
+  + MLlib for ML at scale, which is equivalent to scikit-learn but in PySpark  
+  + don't iterate through rows 
+  + do df.limit(5).toPandas() NOT df.toPandas().head() 
+     
