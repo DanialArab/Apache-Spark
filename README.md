@@ -213,9 +213,7 @@ Spark in its early days began with something known as the **RDD syntax**, which 
 <a name="21"></a>
 ### How to define Schema
 
-If Spark cannot properly infer the Schema we can define the Schema while reading the data like: 
-
-Often if you're not dealing with data that's really nice, or maybe from a particular source, you need to actually clarify what the Schema is. So in order to do certain operations, the Schema has to be correct. It has to know what columns are strings, what columns are integers, etc.
+If Spark cannot properly infer the Schema we can define the Schema while reading the data. Often if we're not dealing with data that's really nice, or maybe from a particular source, we need to actually clarify what the Schema is. So in order to do certain operations, the Schema has to be correct. It has to know what columns are strings, what columns are integers, etc.
 
         from pyspark.sql.types import StructField,StringType,IntegerType,StructType
         
@@ -228,26 +226,28 @@ Often if you're not dealing with data that's really nice, or maybe from a partic
 <a name="22"></a>
 ### How to grab data from a spark DataFrame
 
-**df['age']** gives me back the column object but if I actually want to get a data frame with that singular column so that I can see the results I use the select method:
++ **df['age']**
 
-**df.select('age').show()**
+It gives me back the column object but if I actually want to get a data frame with that singular column so that I can see the results I use the select method:
 
-So the main differences between these two methods is the fact that one of them, the first one, is returning back a column, while the second one is returning a data frame that contains a single column, so we have a lot more methods and attributes we can call off of that.
++ **df.select('age').show()**
+
+So the main difference between these two methods is the fact that one of them, the first one, is returning back a column, while the second one is returning a data frame that contains a single column, so we have a lot more methods and attributes we can call off of that.
 
 You get a lot more flexibility with a data frame of a single column versus just a column So a lot of times we use select instead of just grabbing that column object.
 
-df.head(2) gives me back a list of row object.
++ df.head(2) gives me back a list of **row object**.
 
 And the reason there are so many specialized objects, such as a column object or a row object, is because of **Spark's ability to read from a distributed data source and then map that out to distributed computing.**
 
 to select multiple columns:
 
-**df.select(['age', 'name'])**
++ **df.select(['age', 'name'])**
 
 <a name="23"></a>
 ### Adding new column using withColumn method
 
-withColumn method basically returns a new dataframe by adding in a column or replacing an existing column. This is not an in place operation and we would have to save this to a new dataframe.
+withColumn method basically returns a new dataframe by adding in a column or replacing an existing column. This is not an in-place operation and we would have to save this to a new dataframe.
 
     df.withColumn('newage', df['age'])
     
@@ -259,17 +259,15 @@ withColumn method basically returns a new dataframe by adding in a column or rep
 <a name="25"></a>
 ### Spark SQL
 
-Using pure SQL to directly deal and interact with the spark data frame
+Using pure SQL to directly deal and interact with the spark data frame:
 
-First I need to register the DataFrame as a SQL temporary view then I can pass in direct SQL queries:
+First I need to **register the DataFrame as a SQL temporary view then I can pass in direct SQL queries:**
 
-**df.crerateOrReplaceTempView('people')**
+    df.crerateOrReplaceTempView('people')
+    results = spark.sql("SELECT * FROM people WHERE age=30")
+    results.show()
 
-**results = spark.sql("SELECT * FROM people WHERE age=30")**
-
-**results.show()**
-
-What's really awesome is if you already have a lot of SQL knowledge, you can leverage that with spark SQL and you can do complicated operations really quickly in case you happen to forget some of the more basic spark data frame operations.
+What's really awesome is if you already have a lot of SQL knowledge, you can leverage that with spark SQL and you can do complicated operations really quickly in case you happen to forget some of the more basic Spark data frame operations.
 
 25. How to filter data when you grabed it
 
