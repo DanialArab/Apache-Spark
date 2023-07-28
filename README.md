@@ -25,7 +25,10 @@ Here is the structure of my notes:
      8. [Installation of findspark library](#19)
 2. [Spark DataFrame](#20)
     1. [How to define Schema](#21)
-    2. [](#)
+    2. [How to grab data from a spark DataFrame](#22)
+    3. [Adding new column using **withColumn** method](#23)
+    4. [Renaming a column using **withColumnRenamed** method](#24)
+    5. [Spark SQL](#25) 
 3. [ML with MLlib](#)
     1. [Linear Regression]()
     2. [Logistic Regression](#)
@@ -222,7 +225,9 @@ Often if you're not dealing with data that's really nice, or maybe from a partic
 
         df = spark.read.json('people.json', schema=final_struc)
         
-21. How to grab data from a spark DataFrame
+<a name="22"></a>
+### How to grab data from a spark DataFrame
+
 **df['age']** gives me back the column object but if I actually want to get a data frame with that singular column so that I can see the results I use the select method:
 
 **df.select('age').show()**
@@ -239,15 +244,22 @@ to select multiple columns:
 
 **df.select(['age', 'name'])**
 
-22. Adding new column using **withColumn method**
+<a name="23"></a>
+### Adding new column using withColumn method
 
 withColumn method basically returns a new dataframe by adding in a column or replacing an existing column. This is not an in place operation and we would have to save this to a new dataframe.
 
-23. Renaming a column using withColumnRenamed method
+    df.withColumn('newage', df['age'])
+    
+<a name="24"></a>
+### Renaming a column using withColumnRenamed method
 
 **df.withColumnRenamed('old_col_name', 'new_col_name')**
 
-24. Using pure SQL to directly deal and interact with the spark data frame
+<a name="25"></a>
+### Spark SQL
+
+Using pure SQL to directly deal and interact with the spark data frame
 
 First I need to register the DataFrame as a SQL temporary view then I can pass in direct SQL queries:
 
