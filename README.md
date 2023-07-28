@@ -24,7 +24,8 @@ Here is the structure of my notes:
      7. [Why Linux?](#18)
      8. [Installation of findspark library](#19)
 2. [Spark DataFrame](#20)
-    1. [
+    1. [How to define Schema](#21)
+    2. [](#)
 3. [ML with MLlib](#)
     1. [Linear Regression]()
     2. [Logistic Regression](#)
@@ -201,17 +202,17 @@ then
     import pyspark 
 
 <a name="20"></a>
-## Spark DataFrame
-HERE
-
-Intro to Spark DF 
+## Spark DataFrame 
 
 Spark in its early days began with something known as the **RDD syntax**, which was a little ugly and a bit tricky to learn. Fortunately, now, Spark 2.0 and higher has shifted towards a **data frame syntax**, which is much cleaner and easier to work with. And this **data frame syntax looks really similar across all the APIs**, which is nice. Meaning if you've already done a course in something like Scala and Spark Learning Python and Spark data frames is really easy. A lot of that stuff looks extremely similar.
 
 
-20. How to define Schema
+<a name="21"></a>
+### How to define Schema
 
-Often if you're not dealing with data that's really nice, or maybe from a particular source, you need to actually clarify what the schema is. So in order to do certain operations, the schema has to be correct. It has to know what columns are strings, what columns are integers, etc..
+If Spark cannot properly infer the Schema we can define the Schema while reading the data like: 
+
+Often if you're not dealing with data that's really nice, or maybe from a particular source, you need to actually clarify what the Schema is. So in order to do certain operations, the Schema has to be correct. It has to know what columns are strings, what columns are integers, etc.
 
         from pyspark.sql.types import StructField,StringType,IntegerType,StructType
         
