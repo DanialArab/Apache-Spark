@@ -269,6 +269,7 @@ First I need to **register the DataFrame as a SQL temporary view then I can pass
 
 What's really awesome is if you already have a lot of SQL knowledge, you can leverage that with spark SQL and you can do complicated operations really quickly in case you happen to forget some of the more basic Spark data frame operations.
 
+HERE
 25. How to filter data when you grabed it
 
 A large part of working with data frames is the ability to quickly filter out data based on conditions. Spark data frames are built on top of that Spark SQL platform, which means, as we previously discussed, if you already know SQL, you could quickly and easily grab that data using SQL commands. However, we're really going to be using the data frame methods as our focus for the course. but here is what it looks like using SQL:
