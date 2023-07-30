@@ -17,10 +17,10 @@ Here is the structure of my notes:
     6. [Spark](#11)
         1. [Spark vs. MapReduce](#12)
         2. [How is Spark so fast?](#13)
-        3. [Spark RRD](#14)
+        3. [Spark RRD API](#14)
         4. [Spark operations](#15)
            1. [Transformations vs. actions behavior](#16)
-        5. [Spark DataFrame](#17)
+        5. [Spark DataFrame API](#17)
      7. [Why Linux?](#18)
      8. [Installation of findspark library](#19)
 2. [Spark DataFrame](#20)
@@ -151,7 +151,7 @@ Spark also can perform operations up to 100x faster than MapReduce
 + Spark can spill over to disk if the memory is filled
 
 <a name="14"></a>
-#### Spark RRD 
+#### Spark RRD API
 
 At the core of Spark is the idea of a **Resilient Distributed Dataset (RDD)**.
 
@@ -178,7 +178,7 @@ There are two types of Spark operations:
 The behavior of transformations versus actions also carries over to the syntax when coding. A lot of times when you write a method call off of a data frame which we're going to be working with pyspark, you won't see anything as a result until you call an action something like show. And this makes sense because if you're working with a really large data set, you don't want to constantly be calculating all the transformations. Maybe a transformation can be something like take the average or take the count of a particular data, or show me where column X is greater than the number two, etc. like that. But you don't want to actually calculate that every time until you're sure you want to perform it because it's such a huge data set. It's quite a task to calculate everything every time you type something. So that's why everything is separated between transformations and then those calls to action.
 
 <a name="17"></a>
-#### Spark DataFrame 
+#### Spark DataFrame API
 
 + When discussing Spark syntax, the coding syntax, we will see RDD syntax vs. DataFrame syntax
 + With the release of Spark 2.0, Spark is moving towards a DataFrame-based syntax, but keep in mind that the way files are being distributed physically can still be thought of as RDD, it is just the typed-out syntax that is changing.
