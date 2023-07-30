@@ -177,6 +177,21 @@ There are two types of Spark operations:
 
 The behavior of transformations versus actions also carries over to the syntax when coding. A lot of times when you write a method call off of a data frame which we're going to be working with pyspark, you won't see anything as a result until you call an action something like show. And this makes sense because if you're working with a really large data set, you don't want to constantly be calculating all the transformations. Maybe a transformation can be something like take the average or take the count of a particular data, or show me where column X is greater than the number two, etc. like that. But you don't want to actually calculate that every time until you're sure you want to perform it because it's such a huge data set. It's quite a task to calculate everything every time you type something. So that's why everything is separated between transformations and then those calls to action.
 
+In the context of Apache Spark, transformations and actions are two fundamental concepts that describe how data is processed and computed within the Spark framework.
+
+Transformations:
+
+Transformations in Spark are operations that create a new distributed dataset from an existing one. However, these operations are **lazy** in nature, meaning they do not get executed immediately. Instead, they build a lineage graph, which is a logical plan representing the sequence of transformations to be applied to the data. Spark maintains this lineage graph to ensure fault tolerance and optimize the execution.
+
+Since transformations are not executed immediately, they allow Spark to optimize the computation plan before actually processing the data. Examples of transformations include **map, filter, groupBy, join, flatMap, etc.** These operations are typically used for data preparation, transformation, and filtering.
+
+Actions:
+
+Actions in Spark are operations that trigger the execution of the previously defined transformations and return a value or write data to an external storage system. Unlike transformations, actions are **eager** and lead to the actual computation of the data lineage. When an action is invoked, Spark determines the optimal way to execute all the preceding transformations and calculates the result.
+Actions are the operations that materialize the RDD (Resilient Distributed Dataset) into the final output, write it to a storage system, or return a value to the driver program. Examples of actions include **collect, count, reduce, saveAsTextFile, foreach, etc.**
+
+To summarize, transformations are lazy and define the sequence of operations to be applied to data, while actions are eager and trigger the actual computation of the data lineage to produce results or write data to external storage. Understanding the distinction between transformations and actions is crucial for optimizing Spark jobs and efficiently processing large-scale data.
+
 <a name="17"></a>
 #### Spark DataFrame API
 
