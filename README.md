@@ -326,13 +326,6 @@ And when we're working in the real world with data, a lot of times we're going t
 <a name="29"></a>
 #### Grouping and aggregating data
 
-<a name="30"></a>
-#### Handling missing data
-
-
-
-27. Groupby and Aggregate Operations 
-
         import findspark
         findspark.init("home/danial/spark-3.3.2-bin-hadoop3")
         from pyspark.sql import SparkSession
@@ -342,7 +335,7 @@ And when we're working in the real world with data, a lot of times we're going t
 
         df.groupBy("Company").mean().show()
 
-    We can import functions from pyspark.sql.functions, then what I can do with these functions is combine them with a **select call**:
+We can import functions from pyspark.sql.functions, then what I can do with these functions is combine them with a **select call**:
 
         from pyspark.sql.functions import countDistinct, avg, stddev
         df.select(avg("Sales")).show()
@@ -355,7 +348,8 @@ And when we're working in the real world with data, a lot of times we're going t
         df.orderBy("Sales").show() # in ascending order 
         df.orderBy(df["Sales"].desc()).show() # in descending order 
         
-28. Missing values 
+<a name="30"></a>
+#### Handling missing data
 
         import findspark
         findspark.init("home/danial/spark-3.3.2-bin-hadoop3")
