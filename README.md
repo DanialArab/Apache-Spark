@@ -350,7 +350,7 @@ We can import functions from pyspark.sql.functions, then what I can do with thes
         
 <a name="30"></a>
 #### Handling missing data
-
+HERE
         import findspark
         findspark.init("home/danial/spark-3.3.2-bin-hadoop3")
         from pyspark.sql import SparkSession
