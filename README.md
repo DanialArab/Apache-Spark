@@ -28,7 +28,12 @@ Here is the structure of my notes:
     2. [How to grab data from a spark DataFrame](#22)
     3. [Adding new column using **withColumn** method](#23)
     4. [Renaming a column using **withColumnRenamed** method](#24)
-    5. [Spark SQL](#25) 
+    5. [Spark SQL](#25)
+    6. [Data handling](#26)
+       1. [Filtering data](#27)
+       2. [Collecting data](#28)
+       3. [Grouping and aggregating data](#29)
+       4. [Handling missing data](#30)
 3. [ML with MLlib](#)
     1. [Linear Regression]()
     2. [Logistic Regression](#)
@@ -284,14 +289,19 @@ First I need to **register the DataFrame as a SQL temporary view then I can pass
 
 What's really awesome is if you already have a lot of SQL knowledge, you can leverage that with spark SQL and you can do complicated operations really quickly in case you happen to forget some of the more basic Spark data frame operations.
 
-HERE
-25. How to filter data when you grabed it
+<a name="26"></a>
+### Data handling
+
+<a name="27"></a>
+#### Filtering data
+
+How to filter data when we grabbed it?
 
 A large part of working with data frames is the ability to quickly filter out data based on conditions. Spark data frames are built on top of that Spark SQL platform, which means, as we previously discussed, if you already know SQL, you could quickly and easily grab that data using SQL commands. However, we're really going to be using the data frame methods as our focus for the course. but here is what it looks like using SQL:
 
 **df.filter("Close < 500").select(["Open", "Close"]).show()**
 
-but the above operation using normal python comparison operations is like:
+but the above operation using normal Python comparison operations is like this:
 
 **df.filter(df["Close"] < 500).select(["Open", "Close"]).show()**
 
@@ -300,6 +310,17 @@ The key things to keep in mind here is that I'm using dot filter and then passin
 **filtering based on multiple conditions**:
 
 **df.filter((df["Close"] < 500) & ~(df["Open"] > 200)).show()**
+
+
+<a name="28"></a>
+#### Collecting data
+
+<a name="29"></a>
+#### Grouping and aggregating data
+
+<a name="30"></a>
+#### Handling missing data
+
 
 26. collect method
 
