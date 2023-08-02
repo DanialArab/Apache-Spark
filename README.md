@@ -299,21 +299,29 @@ How to filter data when we grabbed it?
 
 A large part of working with data frames is the ability to quickly filter out data based on conditions. Spark data frames are built on top of that Spark SQL platform, which means, as we previously discussed, if you already know SQL, you could quickly and easily grab that data using SQL commands. However, we're really going to be using the data frame methods as our focus for the course. but here is what it looks like using SQL:
 
-**df.filter("Close < 500").select(["Open", "Close"]).show()**
+        df.filter("Close < 500").select(["Open", "Close"]).show()
 
 but the above operation using normal Python comparison operations is like this:
 
-**df.filter(df["Close"] < 500).select(["Open", "Close"]).show()**
+        df.filter(df["Close"] < 500).select(["Open", "Close"]).show()
 
 The key things to keep in mind here is that I'm using dot filter and then passing in the column, some comparison operator and then the value.
 
 **filtering based on multiple conditions**:
 
-**df.filter((df["Close"] < 500) & ~(df["Open"] > 200)).show()**
-
+        df.filter((df["Close"] < 500) & ~(df["Open"] > 200)).show()
 
 <a name="28"></a>
 #### Collecting data
+
+And when we're working in the real world with data, a lot of times we're going to want to collect stuff so we can actually work with that variable later on. Often in this course, we'll be just using **show** so we can actually see stuff, but we don't really need to collect it. But **in real life we'll probably be collecting more often than showing.**
+
+        result = df.filter(df["Low"] == 197.16).collect()*
+
+        row = result[0]
+
+        row.asDict()
+
 
 <a name="29"></a>
 #### Grouping and aggregating data
@@ -322,15 +330,6 @@ The key things to keep in mind here is that I'm using dot filter and then passin
 #### Handling missing data
 
 
-26. collect method
-
-And when you're working in the real world with data, a lot of times you're going to want to collect stuff so you can actually work with that variable later on. Often in this course, we'll just using we'll just be using **show** so you can actually see stuff, but we don't really need to collect it. But **in real life you'll probably be collecting more often than showing.**
-
-**result = df.filter(df["Low"] == 197.16).collect()** 
-
-**row = result[0]**
-
-**row.asDict()**
 
 27. Groupby and Aggregate Operations 
 
