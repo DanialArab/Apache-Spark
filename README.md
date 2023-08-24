@@ -2,7 +2,7 @@
 
 This repo documents my understanding of Apache Spark and how it comes to rescue with big data where Pandas has limitations. The theories and my notes from the Udemy course <a href="https://www.udemy.com/course/spark-and-python-for-big-data-with-pyspark/?utm_source=adwords&utm_medium=udemyads&utm_campaign=Webindex_Catchall_la.EN_cc.CA&utm_term=_._ag_119831896715_._ad_533102824920_._kw__._de_c_._dm__._pl__._ti_dsa-392284169515_._li_9001494_._pd__._&matchtype=&gclid=Cj0KCQjwiIOmBhDjARIsAP6YhSUQcjYp_yVRKuBsf8-vQMvg9cYbeRWiB5dJchKx6zZMSHmkROT5zqMaAnzIEALw_wcB">Spark and Python for Big Data with PySpark</a> and <a href="https://spark.apache.org/docs/latest/">Spark documentation</a> are detailed in the following. My solutions to all coding assignments are incorporated in the Jupyter Notebook files attached to this repo. 
 
-Here is the structure of my notes: 
+Here is the structure of my notes:
 
 1. [Introduction](#1)
     1. [Why Spark?](#2)
