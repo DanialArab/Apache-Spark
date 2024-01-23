@@ -4,7 +4,7 @@ This repo documents my understanding of Apache Spark and how it comes to rescue 
 
 Here is the structure of my notes:
 
-1. [Introduction](#1)
+1. [Introduction](#1) 
     1. [Why Spark?](#2)
     2. [What is big data and how to handle it?](#3)
     3. [Local vs. distributed system](#4)
